@@ -1,7 +1,7 @@
 # Challenge 0: Initial Information    
     
 To complete this hackathon you need to have:
-- Access to Azure subscription with ability to create resourses and register apps in AAD
+- Access to Azure subscription with ability to create resources and register apps in AAD
 - Access to partner center with ability to create Marketplace offers
 - Clear understanding of how to charge customers according to non-standard units using Metered API
 
