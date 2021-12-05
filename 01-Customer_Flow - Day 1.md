@@ -61,7 +61,7 @@ Let's drill down into the  flow of a customer buying a publisher's subscription.
 ### Where to find subscribed product in Azure Portal?
 
 In top search provide saas and select first option. You will be redirected to all SaaS subscriptions associated with your account.
-![Saas Subscription List](images/saassubscriptionlist.png)
+![Saas Subscription List](images/saassubscriptionlist.PNG)
 
 ## Success Criteria
 1. Show in Azure Portal that offer was subscribed and it is in pending state.
