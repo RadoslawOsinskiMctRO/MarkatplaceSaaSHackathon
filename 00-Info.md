@@ -1,4 +1,4 @@
-##Challenge 0: Initial Information    
+# Challenge 0: Initial Information    
     
 To complete this hackathon you need to have:
 - Access to Azure subscription with ability to create resourses and register apps in AAD
