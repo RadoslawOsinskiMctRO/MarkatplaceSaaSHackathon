@@ -1,4 +1,4 @@
-#Challenge 2: Deploy SaaS Accelerator
+# Challenge 2: Deploy SaaS Accelerator
 
 ## Introduction
 Now you will deploy managment portal which you can reuse for the purpose of your own product.
