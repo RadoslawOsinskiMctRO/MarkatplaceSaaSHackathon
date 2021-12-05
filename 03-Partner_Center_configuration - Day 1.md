@@ -1,4 +1,4 @@
-#Challenge 3: Partner Center configuration
+# Challenge 3: Partner Center configuration
 
 ## Introduction
 This challange allow you to understand technical requirements of the integration and review the information that need to be provided in partner center to publish transactable offer. 
