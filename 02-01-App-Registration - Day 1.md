@@ -1,4 +1,4 @@
-#Challenge 02-01: App Registration
+# Challenge 02-01: App Registration
 
 ## Introduction
 App registration is crucial point in communication between your application and Marketplace. By registering service principal in AAD you can use credentials to get JWT token and the get customers subscriptions, add metered services or approve changes.
