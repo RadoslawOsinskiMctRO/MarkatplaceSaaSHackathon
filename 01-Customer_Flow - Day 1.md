@@ -1,4 +1,4 @@
-#Challenge 1: Customer Flow
+# Challenge 1: Customer Flow
 
 ## Introduction
 On this challange you will put customer shoes and you will understand what customer need to do to purchase the product via Azure Marketplace. 
