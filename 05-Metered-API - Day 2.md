@@ -109,7 +109,8 @@ ViewData["Title"] = title;
 Now we need to add code for posting the metered API. Go back to **HomeController** and add below code under **EmitUsage** function:
 
 ```c#
-public async Task<IActionResult> EmitUsageAsync(MeteringUsageRequest meteringRequest)
+[HttpPost]
+public async Task<IActionResult> EmitUsage(MeteringUsageRequest meteringRequest)
 {
    try
    {
@@ -121,7 +122,7 @@ public async Task<IActionResult> EmitUsageAsync(MeteringUsageRequest meteringReq
       var requestJson = JsonSerializer.Serialize(meteringRequest);
       var responseJson = string.Empty;      
       
-      logger.LogInformation("EmitUsageEventAsync");
+      logger.LogInformation("EmitUsageEvent");
       responseJson = JsonSerializer.Serialize(result);
       logger.LogInformation(responseJson);
             
