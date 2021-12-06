@@ -1,22 +1,22 @@
 # Challenge 02-01: App Registration
 
 ## Introduction
-App registration is crucial point in communication between your application and Marketplace. By registering service principal in AAD you can use credentials to get JWT token and the get customers subscriptions, add metered services or approve changes.
+App registration is a crucial point in communication between your application and Marketplace. By registering service principal in AAD you can use credentials to get JWT token and get customers subscriptions, add metered services or approve changes.
 
 ## Description
-Follow the steps with screens to get Application ID, Application Secret and tenant ID to provide it when deployment script will be executed.
+Follow the steps with screens to get Application ID, Application Secret and tenant ID to provide it when deployment script is executed.
 
 **1. Find App registration**
 ![Find App Regisdtration](images/aad_0.PNG)
 
 
-**2. Register new AAD application and select mutitenancy**
+**2. Register new AAD application and select multitenancy**
 ![Select multitenant](images/aad_1.PNG)
 
 **3. Allow ID Tokens**
 ![Image 2](images/aad_2.PNG)
 
-**3. Create secret and save value**
+**3. Create secret and save the value**
 ![Image 3](images/aad_3.PNG)
 
 **4. Save App ID and Tenant ID**

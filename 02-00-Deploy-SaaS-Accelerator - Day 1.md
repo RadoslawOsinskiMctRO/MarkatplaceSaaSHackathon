@@ -1,7 +1,7 @@
 # Challenge 2: Deploy SaaS Accelerator
 
 ## Introduction
-Now you will deploy managment portal which you can reuse for the purpose of your own product.
+Now you will deploy management portal, which you can reuse for the purpose of your own product.
 
 ## Description
 Go to aka.ms/SaaSAccelerator and read repo main readme file and follow installaction instruction.<br>
@@ -27,9 +27,9 @@ git clone https://github.com/Azure/Commercial-Marketplace-SaaS-Accelerator.git -
 -ADMTApplicationID "XXXXXXX-XXXX-XXXX-XXXX-XXXXXXX" 
 ```
 ## Success Criteria
-1. You can log in into customer portal.
-2. You can log in into admin portal.
-3. Check if configuration was pushed correctly in App Service settings.
+1. You can log in to customer portal.
+2. You can log in to admin portal.
+3. Check if the configuration was pushed correctly in App Service settings.
 
 ## Learning Resources
 aka.ms/saasaccelerator

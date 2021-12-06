@@ -1,24 +1,24 @@
 # Challenge 1: Customer Flow
 
 ## Introduction
-On this challenge you will put customer shoes and you will understand what customer need to do to purchase the product via Azure Marketplace. 
-As well you will familiar with SaaS Fulfillment API which is main point for communication with Azure Marketplace.
+On this challenge, you will put customer shoes and you will understand what customer need to do to purchase the product via Azure Marketplace. 
+As well you will be familiar with SaaS Fulfillment API which is the main point for communication with Azure Marketplace.
 
 ## Description
-You need to go to azuremarketplace.com and subscribe one of the offer. You need to select one of the free offer as you are using sponsorship subscription. You cannot pay for partner product using Azure Credits. 
-We recommend to use one of our partners' published offers:
+You need to go to azuremarketplace.com and subscribe one of the offers. You need to select one of the free offer as you are using a sponsorship subscription. You cannot pay for partner product using Azure Credits. 
+We recommend using one of our partners' published offers:
 E.g. [Atlas MongoDB](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/mongodb.mdb_atlas_oct2020?tab=PlansAndPrice) or [Twillo SendGrid](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/sendgrid.tsg-saas-offer?tab=Overview)
 
 ### The Landing Page authentication workflows
-Lets analyse what happened during your purchase.
+Let's analyse what happened during your purchase.
 
 ![sell_thru_ms](images/sell_thru_ms.png)
 
 
-1. Customer found product on Azure Portal, Azure Marketplace or got direct ling from someone and click "Get it now"
+1. Customer found a product on Azure Portal, Azure Marketplace or got direct ling from someone and click "Get it now"
 2. They validated via Azure Active Directory, the same account that is used to access current Azure services.
 3. Customer is redirected to page for subscription enablement
-4. Identity of a purchaser is validated and confirming  that this customer has right to purchase your offer
+4. Identity of a purchaser is validated and confirmed that this customer has the right to purchase your offer
 5. Customer providing basic information about subscription and confirming selected pricing plan and click subscribe
 6. Azure create product subscription and attach this position to customer invoice but billing is not active yet
 7. Customer is redirected to your landing page where you can collect or required data for account activation
@@ -39,7 +39,7 @@ Optionally there are a few things one might consider for inclusion on a landing 
 - Send email to operations team about new customer
 - Automatically provision the customer's account
 
-Landing page is just a ***page hosted by the publisher***. In this hackathon we will be using Landing page implemented in aka.ms/SaaSAccelerator repository.
+Landing page is just a ***page hosted by the publisher***. In this hackathon we will use the Landing page implemented in aka.ms/SaaSAccelerator repository.
 
 
 ### SaaS Offer Purchase Flow in Depth
