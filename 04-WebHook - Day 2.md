@@ -154,7 +154,7 @@ Drag and drop the CustomerPortal.zip to the UI with the directory listing. This 
 
 Now, subscribe to the offer, activate it using your Admin portal and cancel the subscription from the portal. You should see email coming to your mailbox with the subscription ID that you can use to identify the customer and contact him if needed.
 
-##Success Criteria
+## Success Criteria
 1. You will receive notification on email when you cancel subscription.
 2. You will answer questions:
 - What statuses operation object can get and when they are triggered?
