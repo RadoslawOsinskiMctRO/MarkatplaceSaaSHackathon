@@ -7,20 +7,20 @@ App registration is crucial point in communication between your application and 
 Follow the steps with screens to get Application ID, Application Secret and tenant ID to provide it when deployment script is executed.
 
 **1. Find App registration**
-![Find App Regisdtration](images/aad_0.png)
+![Find App Regisdtration](images/aad_0.PNG)
 
 
 **2. Register new AAD application and select multitenancy**
-![Select multitenant](images/aad_1.png)
+![Select multitenant](images/aad_1.PNG)
 
 **3. Allow ID Tokens**
-![Image 2](images/aad_2.png)
+![Image 2](images/aad_2.PNG)
 
 **3. Create secret and save value**
-![Image 3](images/aad_3.png)
+![Image 3](images/aad_3.PNG)
 
 **4. Save App ID and Tenant ID**
-![Image 4](images/aad_4.png)
+![Image 4](images/aad_4.PNG)
 
 
 ## Learning Resources
