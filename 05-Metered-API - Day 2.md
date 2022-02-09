@@ -21,7 +21,7 @@ We will add custom form to add custom metered API call on specific subscription.
 
 In my example, I have custom dimension for **Custom email sent** with ID **2c3cd506-73f3-49e5-9d6f-a13a9b78eea0** on plan **cee-free-plan**.
 
-![metered dimension](/Images/18-metered-api-dimension.png)
+![metered dimension](/images/18-metered-api-dimension.png)
 
 Go to **SaaS.SDK.PublisherSolution**, open **HomeController** in folder **Controllers**. Add below code after **Index()** method.
 ```c#
@@ -50,7 +50,7 @@ public IActionResult EmitUsage(Guid subscriptionId, string planId)
 
 Right click on **View(Model)** and select **Add view** option.
 
-![Add scafold item](../Coach/Images/19-add-new-scaffold-item.png)
+![Add scafold item](/images/19-add-new-scaffold-item.png)
 
 Choose **Razor view empty**. Copy below code into file (before copy press CTRL+A to select all items and delete everything before pasting code). Choose name **EmitUsage.cshtml** (the same as method name in controller):
 ```c#
