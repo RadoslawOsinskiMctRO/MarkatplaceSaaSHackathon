@@ -30,7 +30,7 @@ Change plan, change quantity, and unsubscribe actions are tested from the publis
 
 Your deployed sample WebHook implementation for CustomerPortal is put into the src/SaaS.SDK.CustomerProvisioning folder and consist of 2 files in 2 sub-folders.
 
-Controllers/WebHook/AzureWebHookController
+Controllers/WebHook/AzureWebHookController and 
 WebHook/WebHookHandler
 
 WebHookPayload sets the API Response payload model.
@@ -69,17 +69,12 @@ using Newtonsoft.Json;
 Right after this line, paste the Customer class definition. This is where we are defining the request schema that will represent the customer request and will go to our web-service.
 
 ```c#
-public class Customer
+public class EmailModel
 {
-    public string Customer;
-    public string Email;
-
-    public Customer(string custName, string adminEmail)
-    {        
-            Customer = custName;
-            Email = adminEmail;
-    }
-} 
+        public string Message { get; set; }
+        public string Subject { get; set; }
+        public string Email { get; set; }
+}
 ```
 
 
@@ -96,9 +91,9 @@ Explanation of the code:
 * If the request is properly formatted and has values, continues with the execution
 * Webhook execution is logged
 * If the Action is Unsubscribe (you can look at the WebHook actions for more actions if you will want to intercept other operations), proceed with the notification
-* url is the HTTP URL of the Logic App that we created that will receive the customer id and your email and send the email using O365 
+* url is the HTTP URL of the HTTP trigger on Azure Functions app that we created that will receive the customer id and your email and send the email using SendGrid service in Azure (which is SaaS offering as well) - code with unit tests is available [here](Extras/SaasFunctions.zip) for download 
 * HTTP Client is instantiated
-* Customer is the class that we use to model the request and then serialize it into JSON
+* EmailModel is the class that we use to model the request and then serialize it into JSON
 * We make a POST request
 
 ```c#
@@ -106,18 +101,28 @@ if (request != null)
    {
      var json = System.Text.Json.JsonSerializer.Serialize(request);
      this.applicationLogService.AddApplicationLog("Webhook Serialize Object " + json);
-     await this.webhookProcessor.ProcessWebhookNotificationAsync(request).ConfigureAwait(false);
-     if (request.Action == WebhookAction.Unsubscribe) { 
-     var url = "https://prod-23.northcentralus.logic.azure.com:443/workflows/6a7d44b2538943488a153a882ca3caec/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=jV-Sw8BAI8kxt0-zjXmPxTF3s7u-SIdtYqWhkaCf8b8";
      
-     using var client = new HttpClient();
-     Customer cust = new Customer ("your customer "+subscriptionsRepository.GetById(request.SubscriptionId).PurchaserEmail+" decided to cancel the subscription", "[INSERT YOUR EMAIL HERE]");
+     await   webhookProcessor.ProcessWebhookNotificationAsync(request)
+            .ConfigureAwait(false);
+     
+     if (request.Action == WebhookAction.Unsubscribe) 
+     { 
+        var url = "https://saas-hack-functions.azurewebsites.net/email";
+     
+        using var client = new HttpClient();
+        var message = $"Subscription cancellation for customer {subscriptionsRepository.GetById(request.SubscriptionId).PurchaserEmail} at {DateTime.Now}";
+        var emailModel = new EmailModel 
+        {
+          Subject = "Subscription cancellation,
+          Message = message,
+          Email = "[INSERT YOUR EMAIL HERE]"
+        };
             
-     var jsoncust = JsonConvert.SerializeObject(cust);
-     var data = new StringContent(jsoncust, Encoding.UTF8, "application/json");
+        var jsoncust = JsonConvert.SerializeObject(cust);
+        var data = new StringContent(jsoncust, Encoding.UTF8, "application/json");
 
-     var response = await client.PostAsync(url, data);
-                 }
+        var response = await client.PostAsync(url, data);
+     }
 }
 ```
 

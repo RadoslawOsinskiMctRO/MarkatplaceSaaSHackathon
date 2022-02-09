@@ -1,7 +1,7 @@
-# Challenge 2: Deploy SaaS Accelerator
+#Challenge 2: Deploy SaaS Accelerator
 
 ## Introduction
-Now you will deploy management portal, which you can reuse for the purpose of your own product.
+Now you will deploy management portal which you can reuse for the purpose of your own product.
 
 ## Description
 Go to aka.ms/SaaSAccelerator and read repo main readme file and follow installaction instruction.<br>

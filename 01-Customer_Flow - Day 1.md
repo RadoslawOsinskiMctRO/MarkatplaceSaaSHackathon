@@ -1,31 +1,30 @@
-# Challenge 1: Customer Flow
+#Challenge 1: Customer Flow
 
 ## Introduction
-On this challenge, you will put customer shoes and you will understand what customer need to do to purchase the product via Azure Marketplace. 
+On this challange, you will put customer shoes and you understand what customer needs to do to purchase the product via Azure Marketplace. 
 As well you will be familiar with SaaS Fulfillment API which is the main point for communication with Azure Marketplace.
 
 ## Description
-You need to go to azuremarketplace.com and subscribe one of the offers. You need to select one of the free offer as you are using a sponsorship subscription. You cannot pay for partner product using Azure Credits. 
+You need to go to azuremarketplace.com and subscribe one of the offers. You need to select one of the free offer as you are using sponsorship subscription. You cannot pay for partner product using Azure Credists. 
 We recommend using one of our partners' published offers:
 E.g. [Atlas MongoDB](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/mongodb.mdb_atlas_oct2020?tab=PlansAndPrice) or [Twillo SendGrid](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/sendgrid.tsg-saas-offer?tab=Overview)
 
 ### The Landing Page authentication workflows
-Let's analyse what happened during your purchase.
+Let's analyse what happens during purchase.
 
 ![sell_thru_ms](images/sell_thru_ms.png)
 
 
-1. Customer found a product on Azure Portal, Azure Marketplace or got direct ling from someone and click "Get it now"
-2. They validated via Azure Active Directory, the same account that is used to access current Azure services.
-3. Customer is redirected to page for subscription enablement
-4. Identity of a purchaser is validated and confirmed that this customer has the right to purchase your offer
-5. Customer providing basic information about subscription and confirming selected pricing plan and click subscribe
-6. Azure create product subscription and attach this position to customer invoice but billing is not active yet
-7. Customer is redirected to your landing page where you can collect or required data for account activation
-8. Customer might be redirected by you to product or instructed about further steps. You need to remember that you need to activate billing withing 30 days using API.  30 days grace period is for you to finish configuration and expose solution to customer
+1. Customer found a product on Azure Portal, Azure Marketplace or got direct link from someone and clicks "Get it now"
+2. The account is validated via Azure Active Directory to be the same account that is used to access current Azure services.
+3. Customer is being redirected to page for subscription enablement
+4. Idenity of a purchaser is validated and confirmed that this customer has right to purchase your offer
+5. Customer providing basic information about subscription, confirming selected pricing plan and click subscribe
+6. Azure creates product subscription and attaches this position to customer invoice, but billing is not active yet
+7. Customer is redirected to your landing page where you can collect required data for account activation
+8. Customer might be redirected by you either directly to product page or instructed about further steps. Please remember that you need to activate billing withing 30days using API.  30 days grace period is for you to finish configuration and expose solution to customer
 
-If something will go wrong with customer configuration or customer will drop subscription configuration in the middle of steps please remember that you have those data in [***Azure Storage Leads Table***](https://docs.microsoft.com/en-us/azure/marketplace/partner-center-portal/commercial-marketplace-lead-management-instructions-azure-table) and you can contact with customer and help with finishing the process.
-
+If something will go wrong with customer configuration or customer will drop subscription configuration in the middle of steps please remember that you have those data in [***Azure Storage Leads Table***](https://docs.microsoft.com/en-us/azure/marketplace/partner-center-portal/commercial-marketplace-lead-management-instructions-azure-table) and you can constact with customer and help with finishing the process.
 
 
 ### Landing Page
@@ -39,7 +38,7 @@ Optionally there are a few things one might consider for inclusion on a landing 
 - Send email to operations team about new customer
 - Automatically provision the customer's account
 
-Landing page is just a ***page hosted by the publisher***. In this hackathon we will use the Landing page implemented in aka.ms/SaaSAccelerator repository.
+Landing page is just a ***page hosted by the publisher***. In this hackathon we will be using Landing page implemented in aka.ms/SaaSAccelerator repository.
 
 
 ### SaaS Offer Purchase Flow in Depth
@@ -54,29 +53,28 @@ Let's drill down into the  flow of a customer buying a publisher's subscription.
 4. You can use JWT token from AAD together with Token from URL to get info about subscription by doing POST on /resolve API endpoint
 5. As a response you will get JSON object containing information regarding offer that customer selected as well as customer's data
 6. You can combine information from subscription JSON object with user account to display to user status of his subscription
-7. Now you need finish configuration of customer product. It can be done by auto provisioning but many B2B product require consultancy with customer before. You have 30 days to finish this activity
+7. Now you need to complete configuration of customer product. It can be done by auto provisioning but many B2B products require prior consultancy with customer. You have 30 days to finish this activity
 8. When customer can use product you need to activate subscription via /activate endpoint and this is the time from when Azure starts charging your customer
-
 
 
 
 ### Where to find subscribed product in Azure Portal?
 
 In top search provide saas and select first option. You will be redirected to all SaaS subscriptions associated with your account.
-![Saas Subscription List](images/saassubscriptionlist.PNG)
+![Saas Subscription List](images/saassubscriptionlist.png)
 
 ## Success Criteria
 1. Show in Azure Portal that offer was subscribed and it is in pending state.
 2. Answer questions:
 - Why offer is in pending state instead activated?
-- When will the customer start being charged? on purchase date or on activation date?
-- Who is hosting the page that customer is redirected - Azure Marketplace or the partner on it's own infrastructure?
-- How the partner knows that the customer purchased the solution?
+- When customer will start be charging, on purchase date or on activation date?
+- Who hosts the page that customer is redirected - Azure Marketplace or partner on it's own subscription?
+- How partner knows that a customer purchased the solution?
 - Why AAD is mandatory for landing page? 
-- What is the maximum number of the days between Subscription and Activation?
+- What is max number of the days between Subscription and Activation?
 - Why you need to call resolve token endpoint in landing page and what information it gives you?
-- What endpoint needs to be called to activate the subscription? 
-- Which field from JSON object received after calling Resolve token endpoint gives you the contact email to the customer?
+- What endpoint should be called to activate subscription? 
+- Which field from JSON object received after calling Resolve token endpoint give you the contact email of customer?
 3. Describe client subscription lifecycle and retention 
 
 ## Learning Resources

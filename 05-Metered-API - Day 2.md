@@ -1,4 +1,4 @@
-# Challenge 5: Use of Metered API
+#Challenge 5: Use of Metered API
 
 ## Introduction
 
@@ -21,7 +21,7 @@ We will add custom form to add custom metered API call on specific subscription.
 
 In my example, I have custom dimension for **Custom email sent** with ID **2c3cd506-73f3-49e5-9d6f-a13a9b78eea0** on plan **cee-free-plan**.
 
-![metered dimension](images/18-metered-api-dimension.png)
+![metered dimension](../Coach/Images/18-metered-api-dimension.png)
 
 Go to **SaaS.SDK.PublisherSolution**, open **HomeController** in folder **Controllers**. Add below code after **Index()** method.
 ```c#
@@ -50,7 +50,7 @@ public IActionResult EmitUsage(Guid subscriptionId, string planId)
 
 Right click on **View(Model)** and select **Add view** option.
 
-![Add scafold item](images/19-add-new-scaffold-item.png)
+![Add scafold item](../Coach/Images/19-add-new-scaffold-item.png)
 
 Choose **Razor view empty**. Copy below code into file (before copy press CTRL+A to select all items and delete everything before pasting code). Choose name **EmitUsage.cshtml** (the same as method name in controller):
 ```c#
@@ -109,8 +109,7 @@ ViewData["Title"] = title;
 Now we need to add code for posting the metered API. Go back to **HomeController** and add below code under **EmitUsage** function:
 
 ```c#
-[HttpPost]
-public async Task<IActionResult> EmitUsage(MeteringUsageRequest meteringRequest)
+public async Task<IActionResult> EmitUsageAsync(MeteringUsageRequest meteringRequest)
 {
    try
    {
@@ -122,7 +121,7 @@ public async Task<IActionResult> EmitUsage(MeteringUsageRequest meteringRequest)
       var requestJson = JsonSerializer.Serialize(meteringRequest);
       var responseJson = string.Empty;      
       
-      logger.LogInformation("EmitUsageEvent");
+      logger.LogInformation("EmitUsageEventAsync");
       responseJson = JsonSerializer.Serialize(result);
       logger.LogInformation(responseJson);
             
@@ -164,53 +163,53 @@ asp-route-planId="@Model.Subscriptions[i].PlanId">Emit usage for custom metered 
 
 ```
 
-![add link to subscriptions](images/20-add-link-to-page.png)
+![add link to subscriptions](../Coach/Images/20-add-link-to-page.png)
 
 Now you should be ready to put the solution to test.
 
 Press **F5** in Visual Studio. After logging in you should be seeing this:
 
-![menu overview](images/21-select-subscriptions.png)
+![menu overview](../Coach/Images/21-select-subscriptions.png)
 
 Select **Subscriptions** and your choose active subscription. Choose menu on the side of that subscription (you should see **Emit usage for custom metered API**):
 
-![emit usage menu option](images/22-select-menu-emit.png)
+![emit usage menu option](../Coach/Images/22-select-menu-emit.png)
 
 Click link and you should see your custom form. Put in the quantity some value and press button **Record usage**.
 
-![record usage](images/23-record-usage.png)
+![record usage](../Coach/Images/23-record-usage.png)
 
 If you are in debug session and you check result returned from metered API call, you should see something similiar as this:
 
-![debugger call succesfull](images/24-call-successful.png)
+![debugger call succesfull](/24-call-successful.png)
 
 ## Deploy to production
 
 As last part we need to push to production. Go to [Azure Portal](https://portal.azure.com) and navigate to SaaS Accelerator admin portal:
 
-![navigate to ](images/25-navigate-to-saas-admin.png)
+![navigate to ](../Coach/Images/25-navigate-to-saas-admin.png)
 
 Click download **Get publish profile** button and save profile to local disk.
 
 Go back to Visual Studio, right click on **SaaS.SDK.PublisherSolution** and select **Publish**.
 
-![publish option](images/26-publish-in-visual-studio.png)
+![publish option](../Coach/Images/26-publish-in-visual-studio.png)
 
 Click **New** and choose **Publish profile**:
 
-![publish profile](images/27-select-publish-profile.png)
+![publish profile](../Coach/Images/27-select-publish-profile.png)
 
 Choose previously downloaded profile and select **Finish**.
 
-![selected publish profile](images/28-publish-profile.png)
+![selected publish profile](../Coach/Images/28-publish-profile.png)
 
 On the Publish profile page select **Publish** and wait for the publish result.
 
-![publish to production](images/29-publish.png)
+![publish to production](../Coach/Images/29-publish.png)
 
 When done, go and check in production, if the changes are there. You should see the same result as on local device.
 
-![seeing result in production](images/30-production.png)
+![seeing result in production](../Coach/Images/30-production.png)
 
 ## Success Criteria
 
