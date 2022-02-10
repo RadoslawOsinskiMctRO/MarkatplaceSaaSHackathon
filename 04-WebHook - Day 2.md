@@ -96,6 +96,8 @@ Explanation of the code:
 * EmailModel is the class that we use to model the request and then serialize it into JSON
 * We make a POST request
 
+Please note, that we are sending email via SendGrid by not existing domain, which can trigger junk policy, so make sure to check that folder as well.
+
 ```c#
 if (request != null)
    {
@@ -113,12 +115,12 @@ if (request != null)
         var message = $"Subscription cancellation for customer {subscriptionsRepository.GetById(request.SubscriptionId).PurchaserEmail} at {DateTime.Now}";
         var emailModel = new EmailModel 
         {
-          Subject = "Subscription cancellation,
+          Subject = "Subscription cancellation",
           Message = message,
           Email = "[INSERT YOUR EMAIL HERE]"
         };
             
-        var jsoncust = JsonConvert.SerializeObject(cust);
+        var jsoncust = JsonConvert.SerializeObject(emailModel);
         var data = new StringContent(jsoncust, Encoding.UTF8, "application/json");
 
         var response = await client.PostAsync(url, data);
