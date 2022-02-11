@@ -109,7 +109,8 @@ ViewData["Title"] = title;
 Now we need to add code for posting the metered API. Go back to **HomeController** and add below code under **EmitUsage** function:
 
 ```c#
-public async Task<IActionResult> EmitUsageAsync(MeteringUsageRequest meteringRequest)
+[HttpPost]
+public async Task<IActionResult> EmitUsage(MeteringUsageRequest meteringRequest)
 {
    try
    {
