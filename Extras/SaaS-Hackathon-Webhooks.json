@@ -1,0 +1,149 @@
+{
+	"info": {
+		"_postman_id": "1442ebe3-396d-4663-be41-84716c4c04e3",
+		"name": "SaaS Hackathon",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Send Email Test",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"Email\", \"youreamail@domain.com\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"message\": \"Test message, if this works from webhook\",\r\n    \"subject\": \"Test subject\",\r\n    \"email\": \"{{Email}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://[DOMAIN].azurewebsites.net/email",
+					"protocol": "https",
+					"host": [
+						"[DOMAIN]",
+						"azurewebsites",
+						"net"
+					],
+					"path": [
+						"email"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Webhook Health Check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://[DOMAIN].azurewebsites.net/health",
+					"protocol": "https",
+					"host": [
+						"[DOMAIN]",
+						"azurewebsites",
+						"net"
+					],
+					"path": [
+						"health"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Local Webhook call",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": \"10e27e72-dd4b-46d5-98e4-e6007e120a59\",\r\n  \"activityId\": \"10e27e72-dd4b-46d5-98e4-e6007e120a59\",\r\n  \"subscriptionId\": \"10e27e72-dd4b-46d5-98e4-e6007e120a59\",\r\n  \"publisherId\": \"10e27e72-dd4b-46d5-98e4-e6007e120a59\",\r\n  \"offerId\": \"offer1\",\r\n  \"planId\": \"free-plan-id\",\r\n  \"quantity\": 25,\r\n  \"timeStamp\": \"2022-02-15T20:17:31.7350641Z\",\r\n  \"action\": \"Unsubscribe\",\r\n  \"status\": \"InProgress\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://[DOMAIN].azurewebsites.net/webhook",
+					"protocol": "https",
+					"host": [
+						"[DOMAIN]",
+						"azurewebsites",
+						"net"
+					],
+					"path": [
+						"webhook"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Local Webhook Empty",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://[domain].azurewebsites.net/webhook",
+					"protocol": "https",
+					"host": [
+						"[domain]",
+						"azurewebsites",
+						"net"
+					],
+					"path": [
+						"webhook"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

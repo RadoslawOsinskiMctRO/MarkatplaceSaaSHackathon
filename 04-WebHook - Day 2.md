@@ -1,11 +1,13 @@
 ## Challenge 4: Implement WebHook
 
-In this challenge you will dive deeper in webhook implementation.
-You will add a new functionality to notify you in case if the subscriber will cancel the subscription from the Azure portal. It will be done through adding this functionality to the WebHook. 
+In this challenge you will dive deeper in webhook implementation. You will deploy separate project to demonstrate how webhook can be implemented outside of demo project. 
 
 ### Pre-requisites
 
-You have to have the dotnet and PowerShell installed. Visual Studio is optional. You have to have a deployed customer portal form saas accelerator.
+To be able to run the solution you will need to have [.NET Core 6](https://dot.net) installed and appropriate local development environments setup. More [here](https://docs.microsoft.com/en-us/azure/azure-functions/functions-develop-local). 
+[Visual Studio](https://visualstudio.com) is _optional_, but recommended. 
+
+If you are on Windows, [Powershell](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-7.2) is already installed. You can follow along as well in other platforms, but you will need to have [PowerShell](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-7.2) installed to use below instructions. 
 
 ### What is the WebHook and what we can and should implement there
 
@@ -28,139 +30,119 @@ Change plan, change quantity, and unsubscribe actions are tested from the publis
 
 ### WebHook Sample Implementation and Workflow
 
-Your deployed sample WebHook implementation for CustomerPortal is put into the src/SaaS.SDK.CustomerProvisioning folder and consist of 2 files in 2 sub-folders.
-
-Controllers/WebHook/AzureWebHookController and 
-WebHook/WebHookHandler
-
-WebHookPayload sets the API Response payload model.
-
-Payload package goes to the WebHookProcessor that looks into the payload.Action field and executes the corresponding action instantiated by WebHookAction class from the WebHookHandler class.
-
-After an update is entered, Microsoft will call the publisher's webhook URL, configured in the Connection webhook field on the Technical configuration page in Partner Center, with an appropriate value for action and other relevant parameters.
-
-AzureWebHookController is a code that wraps the WebHook functionality and thus should be used to any functionality that is not core to the webhook.
-
-![scheme](https://docs.microsoft.com/en-us/azure/marketplace/partner-center-portal/media/saas-update-status-api-v2-calls-marketplace-side.png)
-
-### Setting up the WebHook interceptor
-
-You want to receive a notification when a customer is cancelling the subscription using Azure portal. The simplest way to implement this is to add the interceptor into the WebHook. The only downside is that you will need to do it as careful as possible as if the code will have any defects, the WebHook will start to throw errors.
-
-In our case, for this event, we set up for you the Azure Logic App for emailing, and we will need to add an HTTP call to our WebHook that will be executed each time when someone is cancelling the subscription. This code does not have any error processing logic, should not be used in production and used only in a purpose of demo.
-
-#### Coding
-
-There are two places where you can put the code, although it will be a little different.
-It can be put into WebhookHandler.cs and it will work, however this will go against best practices about how we divide the functionality. The WebHookHandler class mission is to provide a functionality to handle different types of request. Intercepting the request here can be a good idea, however if the interceptor code will fail, we will likely lose the request - even with the retry logic Microsoft is using. 
-
-Instead we add this to the AzureWebhookController.cs which is the controller where we handle the high-level logic of handling the request.
-
-Open AzureWebhookController.cs.
-
-Add imports to the very beginning. We will use few useful standard classes.
-
-```c#
-using System.Text;
-using System.Net.Http;
-using Newtonsoft.Json; 
-```
-
-Right after this line, paste the Customer class definition. This is where we are defining the request schema that will represent the customer request and will go to our web-service.
-
-```c#
-public class EmailModel
-{
-        public string Message { get; set; }
-        public string Subject { get; set; }
-        public string Email { get; set; }
-}
-```
-
-
-Now, look for this line
-
-```c#
-public async void Post(WebhookPayload request)
-```
-
-
-Replace the content of this method starting with "if" clause. Replace the "INSERT YOUR EMAIL" with your email - this is where the notification will be sent.
-
-Explanation of the code:
-* If the request is properly formatted and has values, continues with the execution
-* Webhook execution is logged
-* If the Action is Unsubscribe (you can look at the WebHook actions for more actions if you will want to intercept other operations), proceed with the notification
-* url is the HTTP URL of the HTTP trigger on Azure Functions app that we created that will receive the customer id and your email and send the email using SendGrid service in Azure (which is SaaS offering as well) - code with unit tests is available [here](Extras/SaasFunctions.zip) for download 
-* HTTP Client is instantiated
-* EmailModel is the class that we use to model the request and then serialize it into JSON
-* We make a POST request
-
-```c#
-if (request != null)
-   {
-     var json = System.Text.Json.JsonSerializer.Serialize(request);
-     this.applicationLogService.AddApplicationLog("Webhook Serialize Object " + json);
-     
-     await   webhookProcessor.ProcessWebhookNotificationAsync(request)
-            .ConfigureAwait(false);
-     
-     if (request.Action == WebhookAction.Unsubscribe) 
-     { 
-        var url = "https://saas-hack-functions.azurewebsites.net/email";
-     
-        using var client = new HttpClient();
-        var message = $"Subscription cancellation for customer {subscriptionsRepository.GetById(request.SubscriptionId).PurchaserEmail} at {DateTime.Now}";
-        var emailModel = new EmailModel 
-        {
-          Subject = "Subscription cancellation,
-          Message = message,
-          Email = "[INSERT YOUR EMAIL HERE]"
-        };
-            
-        var jsoncust = JsonConvert.SerializeObject(cust);
-        var data = new StringContent(jsoncust, Encoding.UTF8, "application/json");
-
-        var response = await client.PostAsync(url, data);
-     }
-}
-```
-
-Re-build (CTRL+B) and re-deploy the project.
-For this, if you can't deploy it using VS for any reason, you can use command line.
-
-Open Powershell.
-
-Go to the (cd [directory]) to the CustomerProvisioning directory.
+To demonstrate that functionality, you will deploy an Azure function to work as webhook. You can check the code [here](https://github.com/vrhovnik/azure-demo-saas-marketplace-webhook) and clone it to you directory of choice like this: 
 
 ```
-\Commercial-Marketplace-SaaS-Accelerator\src\SaaS.SDK.CustomerProvisioning\
+git clone https://github.com/vrhovnik/azure-demo-saas-marketplace-webhook.git
+```
+
+If you don't have [git](https://git-scm.com/downloads) installed, you can download it as zip (check below picture). If you did download it as zip, extract the content in the folder.
+
+![Download as zip option](images/download-as-zip.png)
+
+If that is not an option, download zip file [here](./Extras/SaasFunctions.zip).
+
+Navigate to the folder. Copy the folder path:
+
+![Folder content](images/folder-content-webhook.png)
+
+_p.s._
+If you are in an editor, you can rebuild the project to get the latest binaries prepared and skip below steps.
+
+Open the folder in Powershell (or command line). and do dotnet build:
+
+```
+dotnet build
+```
+
+![Powershell dotnet build](images/powershell-build.png)
+
+If build is successful, let's deploy the solution to the Azure.
+
+Navigate to the [Azure Portal](https://portal.azure.com). Create new Azure Function. 
+
+![Create new Azure Function](images/Create-Resource-Azure-Function.png)
+
+Select resource group (where your app is located) and choose Publish method to be **Code** and Runtime stack **.NET** with version **6**. Select region based on your app the resource group.
+
+![Step 1](images/Create-Azure-Function-Step1.png)
+
+Pick storage account which you used for leads generation and select **Windows** as Operating System (you can select Linux as well, if you want to test that functionality). Make sure **Consumption** is selected as Plan type.
+
+![Step 2](images/Create-Azure-Function-Step2.png)
+
+Proceed to review and create, revisit summary and confirm the creation. Wait for Azure Function to be deployed.
+
+Navigate to storage account. Webhook will write to Azure Table to demonstrate logs.
+
+![Create table](images/Create-Table.png)
+
+Click Add table and put in the name **webhooklogs**.
+
+![webhook name](images/Create-Table-Form.png)
+
+Confirm and proceed to Access keys section in the menu on the left and copy connection string.
+
+![Copy connection string](images/Copy-ConnectionString-Table.png)
+
+Navigate to the newly created Azure Function configuration page and add that connection string.
+
+![Azure Function configuration settings](images/Copy-ConnectionString-To-Azure-Function-Configuration.png)
+
+Save and we are ready to deploy the application to Azure.
+
+_p.s._
+Below are instructions for PowerShell, but you can use tools which suits you better. Deployment options available [here](https://docs.microsoft.com/en-us/azure/azure-functions/functions-deployment-technologies).
+
+### Powershell instructions
+
+Go to the (cd [directory]) to the **SaasFunctions\SaasFunctions** directory.
+
+```
+\SaasFunctions\SaasFunctions\
 ```
 
 Execute this command.
 
 ```powershell
-dotnet publish .\SaaS.SDK.CustomerProvisioning.csproj -c debug -o CustomerPortal
+dotnet publish .\SaasFunctions.csproj -c debug -o Webhook
 ```
 
 Execute this command.
 
 ```powershell
-Compress-Archive -Path .\CustomerPortal\* -DestinationPath CustomerPortal.zip -Force
+Compress-Archive -Path .\Webhook\* -DestinationPath Webhook.zip -Force
 ```
 
 This will prepare our project to be deployed.
 
 Go to Kudu website. Change the "link" to the value of your website, DO NOT CHANGE anything else.
+
 ```
 https://yourwebsite.scm.azurewebsites.net/ZipDeployUI
 ```
-Drag and drop the CustomerPortal.zip to the UI with the directory listing. This will cause the upload and deployment.
 
-Now, subscribe to the offer, activate it using your Admin portal and cancel the subscription from the portal. You should see email coming to your mailbox with the subscription ID that you can use to identify the customer and contact him if needed.
+Drag and drop the **Webhook.zip** to the UI with the directory listing. This will cause the upload and deployment.
+
+Navigate to Azure Function and select Functions in the menu. You should see this:
+
+![azure functions](images/azure-function-overview.png)
+
+Go into MarketplaceWebhook and select Monitor (if you don't see anything, enable monitoring support in Azure Functions - more here):
+
+![Azure Functions monitor](images/azure-function-monitor.png)
+
+Select **logs tab** to check data in realtime and open new tab in browser. Navigate to the consumer apps landing page and subscribe to the offer, activate it using your Admin portal and cancel the subscription from the portal. You should see notification coming to your webhook with details.
+
+Navigate back to Azure Functions logs tab to see the results.
+
+**Before you start testing webhook please copy MarketplaceWebhook Function URL, paste it in Partner Center as Webhook and republish an offer**
+
+You can use [this postman collection](./Extras/SaaS-Hackathon-Webhooks.json) to be able to modify requests and play around with webhook to validate the right usage.
 
 ## Success Criteria
-1. You will receive notification on email when you cancel subscription.
+
+1. You will receive notification in Azure Table when customer change plan. Implementing SendGrid and Email notification function is extra challange which you can come back after finishing challange 5. 
 2. You will answer questions:
 - What statuses operation object can get and when they are triggered?
 - Does Azure Marketplace store history of changes?

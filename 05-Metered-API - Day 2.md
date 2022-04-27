@@ -109,7 +109,8 @@ ViewData["Title"] = title;
 Now we need to add code for posting the metered API. Go back to **HomeController** and add below code under **EmitUsage** function:
 
 ```c#
-public async Task<IActionResult> EmitUsageAsync(MeteringUsageRequest meteringRequest)
+[HttpPost]
+public async Task<IActionResult> EmitUsage(MeteringUsageRequest meteringRequest)
 {
    try
    {
@@ -218,6 +219,7 @@ Your task is to provide:
    1. Dimension as metric of number of API Call e.g. 100 events costs 0$
    2. Dimension for man-hours e.g. 1h cost 0$
    3. Dimension for undefined activities e.g. 1 event cost 0$
+   4. Use Metered API endpoint to check how many events was sent to Marketplace - you can use postman tool
 
 _Hint_: Check [MeteredAPI implementation](https://github.com/Azure/Commercial-Marketplace-SaaS-Accelerator/blob/main/src/SaaS.SDK.Services/Services/MeteredBillingAPIService.cs) inside SaaS Accelerator and how that can be re-used.
 
