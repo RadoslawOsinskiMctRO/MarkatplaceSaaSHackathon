@@ -79,58 +79,13 @@ Navigate to storage account. Webhook will write to Azure Table to demonstrate lo
 
 Click Add table and put in the name **webhooklogs**.
 
-<<<<<<< HEAD
 ![webhook name](images/Create-Table-Form.png)
 
 Confirm and proceed to Access keys section in the menu on the left and copy connection string.
 
 ![Copy connection string](images/Copy-ConnectionString-Table.png)
 
-Navigate to the newly created Azure Function configuration page and add that connection string.
-=======
-Replace the content of this method starting with "if" clause. Replace the "INSERT YOUR EMAIL" with your email - this is where the notification will be sent.
-
-Explanation of the code:
-* If the request is properly formatted and has values, continues with the execution
-* Webhook execution is logged
-* If the Action is Unsubscribe (you can look at the WebHook actions for more actions if you will want to intercept other operations), proceed with the notification
-* url is the HTTP URL of the HTTP trigger on Azure Functions app that we created that will receive the customer id and your email and send the email using SendGrid service in Azure (which is SaaS offering as well) - code with unit tests is available [here](Extras/SaasFunctions.zip) for download 
-* HTTP Client is instantiated
-* EmailModel is the class that we use to model the request and then serialize it into JSON
-* We make a POST request
-
-Please note, that we are sending email via SendGrid by not existing domain, which can trigger junk policy, so make sure to check that folder as well.
-
-```c#
-if (request != null)
-   {
-     var json = System.Text.Json.JsonSerializer.Serialize(request);
-     this.applicationLogService.AddApplicationLog("Webhook Serialize Object " + json);
-     
-     await   webhookProcessor.ProcessWebhookNotificationAsync(request)
-            .ConfigureAwait(false);
-     
-     if (request.Action == WebhookAction.Unsubscribe) 
-     { 
-        var url = "https://saas-hack-functions.azurewebsites.net/email";
-     
-        using var client = new HttpClient();
-        var message = $"Subscription cancellation for customer {subscriptionsRepository.GetById(request.SubscriptionId).PurchaserEmail} at {DateTime.Now}";
-        var emailModel = new EmailModel 
-        {
-          Subject = "Subscription cancellation",
-          Message = message,
-          Email = "[INSERT YOUR EMAIL HERE]"
-        };
-            
-        var jsoncust = JsonConvert.SerializeObject(emailModel);
-        var data = new StringContent(jsoncust, Encoding.UTF8, "application/json");
-
-        var response = await client.PostAsync(url, data);
-     }
-}
-```
->>>>>>> 4f74dfa7a5dd5b6eac0cba1e42855934a7f81c6d
+Navigate to the newly created Azure Function configuration page (you will find it on the left side in menu) and add that connection string.
 
 ![Azure Function configuration settings](images/Copy-ConnectionString-To-Azure-Function-Configuration.png)
 
